@@ -32,10 +32,14 @@
 [0-9a-zA-Z!@#$%^&*]{6,} - строка состоит не менее, чем из 6 вышеупомянутых символов.
 */
 
+import useVuelidate from "@vuelidate/core";
+import { required } from "@vuelidate/validators";
+
 export default {
   name: "HelloForm",
   data() {
     return {
+      v$: useVuelidate(),
       password: "",
       repeatPassword: "",
       stateResult: false,
@@ -45,12 +49,19 @@ export default {
       },
     };
   },
+  validations() {
+    return {
+      password: { required },
+      repeatPassword: { required },
+    };
+  },
   methods: {
     submitForm(e) {
       // const regExp = new RegExp(
       //   "/(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}/g"
       // );
       // console.log(regExp);
+      console.log(this.v$);
       const checkingLength =
         this.password.length === this.repeatPassword.length;
 
