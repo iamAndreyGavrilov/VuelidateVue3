@@ -1,4 +1,4 @@
-# vuelidat
+# VuelidateVue3
 
 ## Project setup
 ```
