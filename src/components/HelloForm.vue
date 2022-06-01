@@ -1,10 +1,10 @@
 <template>
   <div>
     <form>
-      <h3>Пароль</h3>
+      <h3>Ввод пароля</h3>
       <p><input v-model.trim="password" type="password" /></p>
-      <h3>Подтверждение пароля</h3>
-      <p><input v-model.trim="passwordСheck" type="password" /></p>
+      <h3>Повтор пароля</h3>
+      <p><input v-model.trim="repeatPassword" type="password" /></p>
       <button @click="submitForm" type="submit">Отправить</button>
     </form>
   </div>
@@ -16,7 +16,11 @@ export default {
   data() {
     return {
       password: "",
-      passwordСheck: "",
+      repeatPassword: "",
+      passwordResult: {
+        success: "",
+        error: "",
+      },
     };
   },
   methods: {
