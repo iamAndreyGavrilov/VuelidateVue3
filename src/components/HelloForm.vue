@@ -1,13 +1,19 @@
 <template>
   <div>
     <form>
-      <h3>Ввод пароля</h3>
       <p>
-        <input v-model.trim="password" type="password" />
+        <input
+          v-model.trim="password"
+          type="password"
+          placeholder="Ввод пароля"
+        />
       </p>
-      <h3>Повтор пароля</h3>
       <p>
-        <input v-model.trim="repeatPassword" type="password" />
+        <input
+          v-model.trim="repeatPassword"
+          type="password"
+          placeholder="Повтор пароля"
+        />
       </p>
       <p v-if="stateResult">Упс! Пароль не совпадает</p>
       <button @click="submitForm">Отправить</button>
