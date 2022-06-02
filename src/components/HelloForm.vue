@@ -76,8 +76,8 @@ export default {
       const regExp = new RegExp("[0-9a-zA-Z!@#$%^&*]{6,}");
 
       if (!regExp.test(this.password)) {
-        this.passwordResult.error = "пароль не прошел валидацию";
         this.statePassResultS = null;
+        this.passwordResult.error = "пароль не прошел валидацию";
         this.statePassResultE = true;
       } else {
         this.statePassResultE = null;
