@@ -2,6 +2,10 @@
   <div>
     <form>
       <p>
+        Пароль должен содержать: число, спецсимвол, латинскую букву в нижнем
+        регистре, латинскую букву в верхнем регистре, быть более 6 символов
+      </p>
+      <p>
         <input
           v-model.trim="password"
           type="password"
@@ -15,7 +19,12 @@
           placeholder="Повтор пароля"
         />
       </p>
-      <p v-if="stateResult">Упс! error</p>
+      <p v-show="stateResult">Упс! Пароль не совпадает</p>
+
+      <p v-show="statePassResultS">{{ passwordResult.success }}</p>
+
+      <p v-show="statePassResultE">{{ passwordResult.error }}</p>
+
       <button @click="submitForm">Отправить</button>
     </form>
   </div>
@@ -23,7 +32,7 @@
 
 <script>
 /**
-  /(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}/g 
+  /(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}/g
 Пояснение:
 (?=.*[0-9]) - строка содержит хотя бы одно число;
 (?=.*[!@#$%^&*]) - строка содержит хотя бы один спецсимвол;
@@ -33,7 +42,7 @@
 */
 
 import useVuelidate from "@vuelidate/core";
-import { required, minLength, sameAs } from "@vuelidate/validators";
+import { required, sameAs } from "@vuelidate/validators";
 
 export default {
   name: "HelloForm",
@@ -42,7 +51,9 @@ export default {
       v$: useVuelidate(),
       password: "",
       repeatPassword: "",
-      stateResult: false,
+      stateResult: null,
+      statePassResultS: null,
+      statePassResultE: null,
       passwordResult: {
         success: "",
         error: "",
@@ -51,13 +62,28 @@ export default {
   },
   validations() {
     return {
-      password: { required, minLength: minLength(6) },
+      password: { required },
       repeatPassword: { required, sameAs: sameAs(this.password) },
     };
+  },
+  watch: {
+    //можно в реалтайме отслеживать
   },
   methods: {
     submitForm(e) {
       e.preventDefault();
+
+      const regExp = new RegExp("[0-9a-zA-Z!@#$%^&*]{6,}");
+
+      if (!regExp.test(this.password)) {
+        this.passwordResult.error = "пароль не прошел валидацию";
+        this.statePassResultS = null;
+        this.statePassResultE = true;
+      } else {
+        this.statePassResultE = null;
+        this.passwordResult.success = "пароль прошел валидацию";
+        this.statePassResultS = true;
+      }
 
       this.v$.$validate();
 
@@ -66,15 +92,6 @@ export default {
       } else {
         this.stateResult = true;
       }
-
-      // const checkingLength =
-      //   this.password.length === this.repeatPassword.length;
-
-      // if (checkingLength) {
-      //   this.stateResult = false;
-      // } else {
-      //   this.stateResult = true;
-      // }
     },
   },
 };
