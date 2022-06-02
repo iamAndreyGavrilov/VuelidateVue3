@@ -15,7 +15,7 @@
           placeholder="Повтор пароля"
         />
       </p>
-      <p v-if="stateResult">Упс! Пароль не совпадает</p>
+      <p v-if="stateResult">Упс! error</p>
       <button @click="submitForm">Отправить</button>
     </form>
   </div>
@@ -33,7 +33,7 @@
 */
 
 import useVuelidate from "@vuelidate/core";
-import { required } from "@vuelidate/validators";
+import { required, minLength, sameAs } from "@vuelidate/validators";
 
 export default {
   name: "HelloForm",
@@ -51,26 +51,30 @@ export default {
   },
   validations() {
     return {
-      password: { required },
-      repeatPassword: { required },
+      password: { required, minLength: minLength(6) },
+      repeatPassword: { required, sameAs: sameAs(this.password) },
     };
   },
   methods: {
     submitForm(e) {
-      // const regExp = new RegExp(
-      //   "/(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}/g"
-      // );
-      // console.log(regExp);
-      console.log(this.v$);
-      const checkingLength =
-        this.password.length === this.repeatPassword.length;
-
       e.preventDefault();
-      if (checkingLength) {
+
+      this.v$.$validate();
+
+      if (!this.v$.$error) {
         this.stateResult = false;
       } else {
         this.stateResult = true;
       }
+
+      // const checkingLength =
+      //   this.password.length === this.repeatPassword.length;
+
+      // if (checkingLength) {
+      //   this.stateResult = false;
+      // } else {
+      //   this.stateResult = true;
+      // }
     },
   },
 };
