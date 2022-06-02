@@ -19,6 +19,7 @@
           placeholder="Повтор пароля"
         />
       </p>
+
       <p v-show="stateResult">Упс! Пароль не совпадает</p>
 
       <p v-show="statePassResultS">{{ passwordResult.success }}</p>
@@ -31,6 +32,8 @@
 </template>
 
 <script>
+// унифицировать - варианты v-show
+
 /**
   /(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}/g
 Пояснение:
@@ -74,6 +77,7 @@ export default {
       e.preventDefault();
 
       const regExp = new RegExp("[0-9a-zA-Z!@#$%^&*]{6,}");
+      //добавить условия проверки по отдельности на каждый тип, сейчас "111111" пропускает
 
       if (!regExp.test(this.password)) {
         this.statePassResultS = null;
@@ -87,11 +91,7 @@ export default {
 
       this.v$.$validate();
 
-      if (!this.v$.$error) {
-        this.stateResult = false;
-      } else {
-        this.stateResult = true;
-      }
+      this.stateResult = this.v$.$error;
     },
   },
 };
