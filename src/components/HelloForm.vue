@@ -22,9 +22,7 @@
 
       <p v-show="stateResult">Упс! Пароль не совпадает</p>
 
-      <p v-show="statePassResultS">{{ passwordResult.success }}</p>
-
-      <p v-show="statePassResultE">{{ passwordResult.error }}</p>
+      <p>{{ passwordResult }}</p>
 
       <button @click="submitForm">Отправить</button>
     </form>
@@ -32,16 +30,13 @@
 </template>
 
 <script>
-// унифицировать - варианты v-show
-
 /**
-  /(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}/g
+  ((?=.*\\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{6,20})
 Пояснение:
 (?=.*[0-9]) - строка содержит хотя бы одно число;
 (?=.*[!@#$%^&*]) - строка содержит хотя бы один спецсимвол;
 (?=.*[a-z]) - строка содержит хотя бы одну латинскую букву в нижнем регистре;
 (?=.*[A-Z]) - строка содержит хотя бы одну латинскую букву в верхнем регистре;
-[0-9a-zA-Z!@#$%^&*]{6,} - строка состоит не менее, чем из 6 вышеупомянутых символов.
 */
 
 import useVuelidate from "@vuelidate/core";
@@ -55,12 +50,7 @@ export default {
       password: "",
       repeatPassword: "",
       stateResult: null,
-      statePassResultS: null,
-      statePassResultE: null,
-      passwordResult: {
-        success: "",
-        error: "",
-      },
+      passwordResult: "",
     };
   },
   validations() {
@@ -76,21 +66,18 @@ export default {
     submitForm(e) {
       e.preventDefault();
 
-      const regExp = new RegExp("[0-9a-zA-Z!@#$%^&*]{6,}");
+      const regExp = new RegExp(
+        "((?=.*\\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{6,20})"
+      );
       //добавить условия проверки по отдельности на каждый тип, сейчас "111111" пропускает
 
       if (!regExp.test(this.password)) {
-        this.statePassResultS = null;
-        this.passwordResult.error = "пароль не прошел валидацию";
-        this.statePassResultE = true;
+        this.passwordResult = "пароль не прошел валидацию";
       } else {
-        this.statePassResultE = null;
-        this.passwordResult.success = "пароль прошел валидацию";
-        this.statePassResultS = true;
+        this.passwordResult = "пароль прошел валидацию";
       }
 
       this.v$.$validate();
-
       this.stateResult = this.v$.$error;
     },
   },
