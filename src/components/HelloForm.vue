@@ -69,7 +69,6 @@ export default {
       const regExp = new RegExp(
         "((?=.*\\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{6,20})"
       );
-      //добавить условия проверки по отдельности на каждый тип, сейчас "111111" пропускает
 
       if (!regExp.test(this.password)) {
         this.passwordResult = "пароль не прошел валидацию";
