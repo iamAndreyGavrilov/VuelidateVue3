@@ -30,6 +30,8 @@
 </template>
 
 <script>
+// успешный пароль - зеленый, не успешный красный
+
 /**
   ((?=.*\\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{6,20})
 Пояснение:
@@ -65,16 +67,20 @@ export default {
   methods: {
     submitForm(e) {
       e.preventDefault();
-
+      // указывать на конкретную ошибку
       const regExp = new RegExp(
         "((?=.*\\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{6,20})"
       );
 
-      if (!regExp.test(this.password)) {
-        this.passwordResult = "пароль не прошел валидацию";
-      } else {
-        this.passwordResult = "пароль прошел валидацию";
-      }
+      // if (!regExp.test(this.password)) {
+      //   this.passwordResult = "пароль не прошел валидацию";
+      // } else {
+      //   "пароль прошел валидацию";
+      // }
+
+      this.passwordResult = regExp.test(this.password)
+        ? "пароль прошел валидацию"
+        : "пароль не прошел валидацию";
 
       this.v$.$validate();
       this.stateResult = this.v$.$error;
