@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main">
     <form>
       <p>
         Пароль должен содержать: число, спецсимвол, латинскую букву в нижнем
@@ -20,9 +20,13 @@
         />
       </p>
 
-      <p v-show="stateResult">Упс! Пароль не совпадает</p>
+      <p :class="{ red: stateResult }" v-show="stateResult">
+        Пароль не совпадает
+      </p>
 
-      <p>{{ passwordResult }}</p>
+      <p :class="{ red: !passwordBoolean, green: passwordBoolean }">
+        {{ passwordResult }}
+      </p>
 
       <button @click="submitForm">Отправить</button>
     </form>
@@ -53,6 +57,7 @@ export default {
       repeatPassword: "",
       stateResult: null,
       passwordResult: "",
+      passwordBoolean: null,
     };
   },
   validations() {
@@ -72,15 +77,11 @@ export default {
         "((?=.*\\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{6,20})"
       );
 
-      // if (!regExp.test(this.password)) {
-      //   this.passwordResult = "пароль не прошел валидацию";
-      // } else {
-      //   "пароль прошел валидацию";
-      // }
-
       this.passwordResult = regExp.test(this.password)
         ? "пароль прошел валидацию"
         : "пароль не прошел валидацию";
+
+      this.passwordBoolean = regExp.test(this.password);
 
       this.v$.$validate();
       this.stateResult = this.v$.$error;
@@ -89,4 +90,17 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.main {
+  width: 200px;
+  height: 100px;
+  margin: auto;
+  margin-top: 50px;
+}
+.red {
+  color: red;
+}
+.green {
+  color: green;
+}
+</style>
