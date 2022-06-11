@@ -69,12 +69,15 @@ export default {
     };
   },
   watch: {
-    //можно в реалтайме отслеживать
+    password() {
+      this.submitForm();
+    },
+    repeatPassword() {
+      this.submitForm();
+    },
   },
   methods: {
-    submitForm(e) {
-      e.preventDefault();
-
+    submitForm() {
       const regExpNum = new RegExp("(?=.*[0-9])");
       const regExpSymbol = new RegExp("(?=.*[!@#$%^&*])");
       const regExpLower = new RegExp("(?=.*[a-z])");
