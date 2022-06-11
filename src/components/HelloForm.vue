@@ -12,6 +12,7 @@
           placeholder="Ввод пароля"
         />
       </p>
+      <li class="main__li" v-for="error in errors" :key="error">{{ error }}</li>
       <p>
         <input
           v-model.trim="repeatPassword"
@@ -58,6 +59,7 @@ export default {
       stateResult: null,
       passwordResult: "",
       passwordBoolean: null,
+      errors: [],
     };
   },
   validations() {
@@ -72,6 +74,27 @@ export default {
   methods: {
     submitForm(e) {
       e.preventDefault();
+
+      const regExpNum = new RegExp("(?=.*[0-9])");
+      const regExpSymbol = new RegExp("(?=.*[!@#$%^&*])");
+      const regExpLower = new RegExp("(?=.*[a-z])");
+      const regExpUpper = new RegExp("(?=.*[A-Z])");
+
+      if (!regExpNum.test(this.password)) {
+        this.errors.push("введите хотя бы одно число");
+      }
+      if (!regExpSymbol.test(this.password)) {
+        this.errors.push("введите хотя бы один спецсимвол");
+      }
+      if (!regExpLower.test(this.password)) {
+        this.errors.push(
+          "введите хотя бы одну латинскую букву в нижнем регистре"
+        );
+      }
+      if (!regExpUpper.test(this.password)) {
+        this.errors.push("бы одну латинскую букву в верхнем регистре");
+      }
+
       // указывать на конкретную ошибку
       const regExp = new RegExp(
         "((?=.*\\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{6,20})"
@@ -91,6 +114,9 @@ export default {
 </script>
 
 <style scoped>
+* {
+  font-size: 10px;
+}
 .main {
   width: 200px;
   height: 100px;
@@ -102,5 +128,9 @@ export default {
 }
 .green {
   color: green;
+}
+.main__li {
+  font-size: 6px;
+  color: red;
 }
 </style>
