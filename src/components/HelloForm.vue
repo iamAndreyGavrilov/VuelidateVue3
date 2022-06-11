@@ -3,7 +3,7 @@
     <form>
       <p>
         Пароль должен содержать: число, спецсимвол, латинскую букву в нижнем
-        регистре, латинскую букву в верхнем регистре, быть более 6 символов
+        регистре, латинскую букву в верхнем регистре, быть более 5 символов
       </p>
       <p>
         <input
@@ -80,6 +80,8 @@ export default {
       const regExpLower = new RegExp("(?=.*[a-z])");
       const regExpUpper = new RegExp("(?=.*[A-Z])");
 
+      this.errors = [];
+
       if (!regExpNum.test(this.password)) {
         this.errors.push("введите хотя бы одно число");
       }
@@ -92,7 +94,12 @@ export default {
         );
       }
       if (!regExpUpper.test(this.password)) {
-        this.errors.push("бы одну латинскую букву в верхнем регистре");
+        this.errors.push(
+          "введите хотя бы одну латинскую букву в верхнем регистре"
+        );
+      }
+      if (this.password.length < 6) {
+        this.errors.push("длинна пароля дожна быть более 5 символов");
       }
 
       // указывать на конкретную ошибку
