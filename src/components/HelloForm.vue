@@ -46,18 +46,18 @@
 (?=.*[A-Z]) - строка содержит хотя бы одну латинскую букву в верхнем регистре;
 */
 
-import useVuelidate from "@vuelidate/core";
-import { required, sameAs } from "@vuelidate/validators";
+import useVuelidate from '@vuelidate/core';
+import { required, sameAs } from '@vuelidate/validators';
 
 export default {
-  name: "HelloForm",
+  name: 'HelloForm',
   data() {
     return {
       v$: useVuelidate(),
-      password: "",
-      repeatPassword: "",
+      password: '',
+      repeatPassword: '',
       stateResult: null,
-      passwordResult: "",
+      passwordResult: '',
       passwordBoolean: null,
       errors: [],
     };
@@ -78,41 +78,41 @@ export default {
   },
   methods: {
     submitForm() {
-      const regExpNum = new RegExp("(?=.*[0-9])");
-      const regExpSymbol = new RegExp("(?=.*[!@#$%^&*])");
-      const regExpLower = new RegExp("(?=.*[a-z])");
-      const regExpUpper = new RegExp("(?=.*[A-Z])");
+      const regExpNum = new RegExp('(?=.*[0-9])');
+      const regExpSymbol = new RegExp('(?=.*[!@#$%^&*])');
+      const regExpLower = new RegExp('(?=.*[a-z])');
+      const regExpUpper = new RegExp('(?=.*[A-Z])');
 
       this.errors = [];
 
       if (!regExpNum.test(this.password)) {
-        this.errors.push("введите хотя бы одно число");
+        this.errors.push('введите хотя бы одно число');
       }
       if (!regExpSymbol.test(this.password)) {
-        this.errors.push("введите хотя бы один спецсимвол");
+        this.errors.push('введите хотя бы один спецсимвол');
       }
       if (!regExpLower.test(this.password)) {
         this.errors.push(
-          "введите хотя бы одну латинскую букву в нижнем регистре"
+          'введите хотя бы одну латинскую букву в нижнем регистре'
         );
       }
       if (!regExpUpper.test(this.password)) {
         this.errors.push(
-          "введите хотя бы одну латинскую букву в верхнем регистре"
+          'введите хотя бы одну латинскую букву в верхнем регистре'
         );
       }
       if (this.password.length < 6) {
-        this.errors.push("длинна пароля дожна быть более 5 символов");
+        this.errors.push('длинна пароля дожна быть более 5 символов');
       }
 
       // указывать на конкретную ошибку
       const regExp = new RegExp(
-        "((?=.*\\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{6,20})"
+        '((?=.*\\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{6,20})'
       );
 
       this.passwordResult = regExp.test(this.password)
-        ? "пароль прошел валидацию"
-        : "пароль не прошел валидацию";
+        ? 'пароль прошел валидацию'
+        : 'пароль не прошел валидацию';
 
       this.passwordBoolean = regExp.test(this.password);
 
